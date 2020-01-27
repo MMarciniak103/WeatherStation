@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="popupPane" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: #039BE5" stylesheets="@../css/popup.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.PopupController">
+    <children>
+        <JFXTextField fx:id="popupText" editable="false" focusColor="WHITE" layoutX="40.0" layoutY="56.0" promptText="Car Rented Succesfully" text="Car Rented Successfully">
+            <font>
+                <Font name="Tahoma Bold" size="27.0" />
+            </font>
+        </JFXTextField>
+        <AnchorPane layoutX="12.0" layoutY="108.0" prefHeight="8.0" prefWidth="376.0" style="-fx-background-color: #9E9E9E; -fx-background-radius: 90;" />
+    </children>
+</AnchorPane>
