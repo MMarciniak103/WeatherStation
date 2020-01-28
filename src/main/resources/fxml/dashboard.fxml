@@ -12,15 +12,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="697.0" prefWidth="1100.0" styleClass="parent" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.DashboardController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" styleClass="parent" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.DashboardController">
    <children>
-      <VBox prefHeight="700.0" prefWidth="300.0" styleClass="sidebar" stylesheets="@../css/dashboard.css">
+      <VBox prefHeight="700.0" prefWidth="310.0" styleClass="sidebar" stylesheets="@../css/dashboard.css">
          <children>
-            <Label prefHeight="70.0" prefWidth="300.0" style="-fx-background-color: #00A2D3;" text="Main Panel" textFill="WHITE">
+            <Label prefHeight="65.0" prefWidth="340.0" style="-fx-background-color: #00A2D3;" text="Main Panel" textFill="WHITE">
                <padding>
                   <Insets left="20.0" />
                </padding>
@@ -28,7 +27,7 @@
                   <Font name="Tahoma Bold" size="23.0" />
                </font>
             </Label>
-            <HBox prefHeight="88.0" prefWidth="300.0">
+            <HBox prefHeight="88.0" prefWidth="311.0">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -38,7 +37,7 @@
                         <Insets left="20.0" top="20.0" />
                      </HBox.margin>
                   </ImageView>
-                  <JFXTextField fx:id="cityText" focusColor="#00e5ff" prefHeight="55.0" prefWidth="191.0" promptText="City...">
+                  <JFXTextField fx:id="cityText" focusColor="#00e5ff" prefHeight="55.0" prefWidth="225.0" promptText="City...">
                      <padding>
                         <Insets left="20.0" top="30.0" />
                      </padding>
@@ -51,13 +50,21 @@
                   <Insets top="10.0" />
                </padding>
             </HBox>
-            <AnchorPane prefHeight="5.0" prefWidth="300.0" style="-fx-background-color: #00A2D3;" />
+            <AnchorPane prefHeight="11.0" prefWidth="311.0" style="-fx-background-color: #00A2D3;" />
             <Label alignment="CENTER" prefHeight="25.0" prefWidth="300.0" text="Date:" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="dateText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="23-01-2020" textFill="WHITE">
+            <Label fx:id="dateText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="localdateText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="16.0" />
                </font>
@@ -70,7 +77,7 @@
                   <Font name="Tahoma Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="measurementsNumberText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="243" textFill="WHITE">
+            <Label fx:id="measurementsNumberText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="16.0" />
                </font>
@@ -86,7 +93,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Label fx:id="maxValueText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="243" textFill="WHITE">
+            <Label fx:id="maxValueText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="16.0" />
                </font>
@@ -99,7 +106,7 @@
                   <Font name="Tahoma Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="minValueText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="243" textFill="WHITE">
+            <Label fx:id="minValueText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="16.0" />
                </font>
@@ -107,19 +114,29 @@
                   <Insets bottom="10.0" />
                </padding>
             </Label>
+            <Label alignment="CENTER" prefHeight="25.0" prefWidth="300.0" text="Mean:" textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="meanText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="16.0" />
+               </font>
+            </Label>
             <Label alignment="CENTER" prefHeight="25.0" prefWidth="300.0" text="Std:" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="stdText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="243" textFill="WHITE">
+            <Label fx:id="stdText" alignment="CENTER" prefHeight="24.0" prefWidth="300.0" text="" textFill="WHITE">
                <font>
                   <Font name="Tahoma Bold" size="16.0" />
                </font>
             </Label>
-            <AnchorPane VBox.vgrow="SOMETIMES">
+            <AnchorPane prefHeight="221.0" prefWidth="307.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <JFXButton fx:id="getResponseBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="184.0" onAction="#getAPIResponse" prefHeight="55.0" prefWidth="149.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="GET" textFill="WHITE">
+                  <JFXButton fx:id="getResponseBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="144.0" onAction="#getAPIResponse" prefHeight="55.0" prefWidth="149.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="GET" textFill="WHITE">
                      <font>
                         <Font name="Tahoma Bold" size="27.0" />
                      </font>
@@ -129,10 +146,9 @@
             </AnchorPane>
          </children>
       </VBox>
-      <VBox layoutX="310.0" layoutY="-14.0" prefHeight="700.0" prefWidth="800.0">
+      <AnchorPane layoutX="310.0" layoutY="-2.0" stylesheets="@../css/dashboard.css">
          <children>
-            <Pane id="skyBox" fx:id="skyBox" prefHeight="122.0" prefWidth="800.0" stylesheets="@../css/dashboard.css" />
-            <BarChart fx:id="barPlot" prefHeight="274.0" prefWidth="800.0">
+            <BarChart fx:id="barPlot" layoutY="123.0" prefHeight="274.0" prefWidth="800.0" stylesheets="@../css/dashboard.css">
               <xAxis>
                 <CategoryAxis side="BOTTOM" fx:id="xAxis" />
               </xAxis>
@@ -141,6 +157,283 @@
               </yAxis>
             </BarChart>
          </children>
-      </VBox>
+      </AnchorPane>
+      <HBox alignment="CENTER" layoutX="310.0" layoutY="408.0" prefHeight="228.0" prefWidth="800.0" stylesheets="@../css/dashboard.css">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="Quality" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="Very good" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="Good" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="Moderate" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="Passable" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="Bad" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="Very Bad" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="PM10" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="0 - 21" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="21,1 - 61" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="61,1 - 101" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="101,1 - 41" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="141,1 - 201" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="&gt; 201" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="PM 2,5" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="0 -13" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="13,1 - 37" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="37,1 - 61" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="61,1 - 85" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="85,1 - 121" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="&gt; 121" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="O3" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="0 - 71" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="71,1 - 121" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="121,1 - 151" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="151,1 - 181" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="181,1 - 241" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="&gt; 241" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="NO2" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="0 - 41" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="41,1 - 101" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="101,1 - 151" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="151,1 - 201" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="201,1 - 401" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="&gt; 401" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="SO2" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="0 - 51" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="51,1 - 101" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="101,1 - 201" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="201,1 - 351" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="351 - 501" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="&gt; 501" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="CO" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #64DD17;" text="0 - 3" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #8BC34A;" text="3,1 - 7" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FDD835;" text="7,1 - 11" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="11,1 - 15" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF5722;" text="15,1 - 21" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #f44336;" text="&gt; 21" textFill="#494848">
+                     <font>
+                        <Font name="Tahoma Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
