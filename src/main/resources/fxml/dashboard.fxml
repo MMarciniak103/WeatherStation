@@ -221,7 +221,7 @@
                         <Font name="Tahoma Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="101,1 - 41" textFill="#494848">
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #FF9800;" text="101,1 - 141" textFill="#494848">
                      <font>
                         <Font name="Tahoma Bold" size="12.0" />
                      </font>

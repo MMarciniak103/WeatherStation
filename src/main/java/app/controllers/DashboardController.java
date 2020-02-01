@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.api.utils.Connector;
+import app.api.utils.ValuesValidator;
 import app.models.Measurement;
 import app.models.measurementComponents.Date;
 import app.util.DialogUtils;
@@ -11,18 +12,22 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -119,6 +124,9 @@ public class DashboardController {
 
         getResponseBtn.disableProperty().bind(Bindings.isEmpty(chosenCity));
 
+        barPlot.setLegendVisible(false);
+
+
     }
 
 
@@ -126,7 +134,7 @@ public class DashboardController {
         System.out.println(chosenParameter);
         try {
             String q = chosenCity.get();
-            String url = apiRequest + URLEncoder.encode(q, "UTF-8")+apiRequestFollow+chosenParameter.getKey();
+            String url = apiRequest + URLEncoder.encode(q, StandardCharsets.UTF_8) + apiRequestFollow + chosenParameter.getKey();
 
             measurements = Connector.getResponse(url);
 
@@ -134,14 +142,14 @@ public class DashboardController {
             String dateobj = measurements.get(0).getDate().getUtc();
             String[] tokens = dateobj.split("T");
             String date = tokens[0];
-            String time = tokens[1].substring(0,8);
-            dateText.setText("UTC: "+date+" "+time);
+            String time = tokens[1].substring(0, 8);
+            dateText.setText("UTC: " + date + " " + time);
 
             String dateObjLocal = measurements.get(0).getDate().getLocal();
             String[] tokensL = dateObjLocal.split("T");
             String dateL = tokensL[0];
-            String timeL = tokensL[1].substring(0,8);
-            localdateText.setText("Local: "+dateL+" "+timeL);
+            String timeL = tokensL[1].substring(0, 8);
+            localdateText.setText("Local: " + dateL + " " + timeL);
 
 
             int mSize = measurements.size();
@@ -154,35 +162,75 @@ public class DashboardController {
 
             double variance = measurements.stream()
                     .map(i -> i.getValue() - average)
-                    .map(i -> i*i)
+                    .map(i -> i * i)
                     .mapToDouble(i -> i).average().getAsDouble();
 
             double std = Math.sqrt(variance);
 
-            maxValueText.setText(String.format("%.3f",max));
-            minValueText.setText(String.format("%.3f",min));
-            meanText.setText(String.format("%.3f",average));
-            stdText.setText(String.format("%.3f",std));
-
-            //group measurements by params
-//            params = measurements.stream().collect(Collectors.groupingBy(x -> x.getParameter()));
-
-//            observableParams.clear();
-//            observableParams.putAll(params);
+            maxValueText.setText(String.format("%.3f", max));
+            minValueText.setText(String.format("%.3f", min));
+            meanText.setText(String.format("%.3f", average));
+            stdText.setText(String.format("%.3f", std));
 
 
-            XYChart.Series<String,Number> series = new XYChart.Series();
-            series.getData().add(new XYChart.Data<>("min",min));
-            series.getData().add(new XYChart.Data<>("max",max));
-            series.getData().add(new XYChart.Data<>("mean",average));
-            series.getData().add(new XYChart.Data<>("std",std));
+            //make new series and populate it with data
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
 
+
+            series.getData().add(new XYChart.Data<>("min", min));
+            series.getData().add(new XYChart.Data<>("max", max));
+            series.getData().add(new XYChart.Data<>("mean", average));
+            series.getData().add(new XYChart.Data<>("std", std));
+
+            // Compare parameter mean value with reference values so it is possible to decide bar color
+            ValuesValidator valuesValidator = new ValuesValidator();
+            int paramStatus = valuesValidator.validateMeasure(chosenParameter.getTableId(), average);
+            String styleCss = "-fx-bar-fill: ";
+            switch (paramStatus) {
+                case 0:
+                    styleCss = styleCss.concat(" #64DD17;");
+                    break;
+                case 1:
+                    styleCss = styleCss.concat(" #8BC34A;");
+                    break;
+
+                case 2:
+                    styleCss = styleCss.concat(" #FDD835;");
+                    break;
+
+                case 3:
+                    styleCss = styleCss.concat(" #FF9800;");
+                    break;
+
+                case 4:
+                    styleCss = styleCss.concat("  #FF5722;");
+                    break;
+
+                case 5:
+                    styleCss = styleCss.concat("   #f44336;");
+                    break;
+
+                default:
+                    styleCss = styleCss.concat(" white;");
+                    break;
+            }
+
+
+            barPlot.setTitle(String.valueOf(chosenParameter));
+//
             barPlot.getData().clear();
-            barPlot.getData().add(series);
+
+            // set bar color according to parameter value status returned by ValuesValidator
+            String finalStyleCss = styleCss;
+            Platform.runLater(() -> {
+                barPlot.getData().add(series);
+                for (Node n : barPlot.lookupAll(".chart-bar")) {
+                    n.setStyle(finalStyleCss);
+
+                }
+            });
 
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         } catch (InvalidParameterException e) {
             DialogUtils.popupWindow("Invalid City", 2);
         }
@@ -205,10 +253,7 @@ public class DashboardController {
 
         parameterBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             chosenParameter = newValue;
-
-//
-//            Double x = params.get(chosenParameter.getKey()).stream().collect(Collectors.averagingDouble(s -> s.getValue()));
-//            System.out.println(x);
+            
 
         });
     }
