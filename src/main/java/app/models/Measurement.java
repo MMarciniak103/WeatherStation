@@ -17,22 +17,27 @@ public class Measurement {
     private String city;
 
     public enum Parameter{
-        BC("bc"),
-        CO("co"),
-        NO2("no2"),
-        O3("o3"),
-        PM10("pm10"),
-        PM25("pm25"),
-        SO2("so2");
+        BC("bc",-1),
+        CO("co",5),
+        NO2("no2",3),
+        O3("o3",2),
+        PM10("pm10",0),
+        PM25("pm25",1),
+        SO2("so2",4);
 
         String key;
+        int tableId;
 
-        Parameter(String key) {
-            this.key = key;
+        Parameter(String key,int tableId) {
+            this.key = key;this.tableId=tableId;
         }
 
         public String getKey() {
             return key;
+        }
+
+        public int getTableId() {
+            return tableId;
         }
     }
 
