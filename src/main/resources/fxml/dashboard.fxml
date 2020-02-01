@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" styleClass="parent" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.DashboardController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #333645;" styleClass="parent" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.DashboardController">
    <children>
       <VBox prefHeight="700.0" prefWidth="310.0" styleClass="sidebar" stylesheets="@../css/dashboard.css">
          <children>
@@ -142,13 +143,14 @@
                      </font>
                   </JFXButton>
                   <JFXComboBox fx:id="parameterBox" focusColor="#00e5ff" layoutX="95.0" layoutY="63.0" prefHeight="43.0" prefWidth="122.0" promptText="Parameter" stylesheets="@../css/dashboard.css" />
+                  <JFXSlider fx:id="limitSlider" blockIncrement="100.0" layoutX="87.0" layoutY="24.0" majorTickUnit="100.0" max="10000.0" min="100.0" minorTickCount="100" snapToTicks="true" value="1000.0" />
                </children>
             </AnchorPane>
          </children>
       </VBox>
-      <AnchorPane layoutX="310.0" layoutY="-2.0" stylesheets="@../css/dashboard.css">
+      <AnchorPane layoutX="310.0" layoutY="-2.0" style="-fx-background-color: #333645;" stylesheets="@../css/dashboard.css">
          <children>
-            <BarChart fx:id="barPlot" layoutY="123.0" prefHeight="274.0" prefWidth="800.0" stylesheets="@../css/dashboard.css">
+            <BarChart fx:id="barPlot" layoutX="16.0" layoutY="125.0" prefHeight="272.0" prefWidth="784.0" stylesheets="@../css/dashboard.css">
               <xAxis>
                 <CategoryAxis side="BOTTOM" fx:id="xAxis" />
               </xAxis>
@@ -156,9 +158,10 @@
                 <NumberAxis fx:id="yAxis" side="LEFT" />
               </yAxis>
             </BarChart>
+            <AnchorPane layoutX="-2.0" prefHeight="707.0" prefWidth="4.0" style="-fx-background-color: #00A2D3;" />
          </children>
       </AnchorPane>
-      <HBox alignment="CENTER" layoutX="310.0" layoutY="408.0" prefHeight="228.0" prefWidth="800.0" stylesheets="@../css/dashboard.css">
+      <HBox alignment="CENTER" layoutX="326.0" layoutY="417.0" prefHeight="219.0" prefWidth="784.0" style="-fx-background-color: #333645;" stylesheets="@../css/dashboard.css">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -396,7 +399,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="CO" textFill="WHITE">
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="100.0" style="-fx-background-color: #00A2D3;" text="CO * 1E3" textFill="WHITE">
                      <font>
                         <Font name="Tahoma Bold" size="12.0" />
                      </font>
