@@ -3,19 +3,17 @@ package app.controllers;
 import app.api.utils.Connector;
 import app.api.utils.ValuesValidator;
 import app.models.Measurement;
-import app.models.measurementComponents.Date;
 import app.util.DialogUtils;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.util.*;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
@@ -39,7 +37,8 @@ import javafx.scene.layout.Pane;
 public class DashboardController {
 
     private final static String apiRequest = "https://api.openaq.org/v1/measurements?city=";
-    private final static String apiRequestFollow = "&parameter=";
+    private final static String apiRequestParameter = "&parameter=";
+    private final static String apiRequestLimit = "&limit=";
 
     @FXML
     public BarChart<String, Number> barPlot;
@@ -61,6 +60,9 @@ public class DashboardController {
 
     @FXML
     public Label meanText;
+
+    @FXML
+    public JFXSlider limitSlider;
 
     @FXML
     private ResourceBundle resources;
@@ -94,7 +96,6 @@ public class DashboardController {
     private List<Measurement> measurements;
 
     private Map<String, List<Measurement>> params;
-    private ObservableMap<String, List<Measurement>> observableParams;
 
     private Measurement.Parameter chosenParameter;
 
@@ -116,16 +117,13 @@ public class DashboardController {
         measurements = new ArrayList<>();
         params = new HashMap<>();
 
-//        observableParams = FXCollections.observableMap(params);
-
         configureParameterBox();
-
-//        parameterBox.disableProperty().bind(Bindings.isEmpty(observableParams));
 
         getResponseBtn.disableProperty().bind(Bindings.isEmpty(chosenCity));
 
         barPlot.setLegendVisible(false);
 
+        xAxis.setCategories(FXCollections.observableArrayList("min","max","mean","std"));
 
     }
 
@@ -134,7 +132,7 @@ public class DashboardController {
         System.out.println(chosenParameter);
         try {
             String q = chosenCity.get();
-            String url = apiRequest + URLEncoder.encode(q, StandardCharsets.UTF_8) + apiRequestFollow + chosenParameter.getKey();
+            String url = apiRequest + URLEncoder.encode(q, StandardCharsets.UTF_8) + apiRequestParameter + chosenParameter.getKey() + apiRequestLimit + (int) limitSlider.getValue();
 
             measurements = Connector.getResponse(url);
 
@@ -143,13 +141,13 @@ public class DashboardController {
             String[] tokens = dateobj.split("T");
             String date = tokens[0];
             String time = tokens[1].substring(0, 8);
-            dateText.setText("UTC: " + date + " " + time);
+            dateText.setText("Latest UTC: " + date + " " + time);
 
             String dateObjLocal = measurements.get(0).getDate().getLocal();
             String[] tokensL = dateObjLocal.split("T");
             String dateL = tokensL[0];
             String timeL = tokensL[1].substring(0, 8);
-            localdateText.setText("Local: " + dateL + " " + timeL);
+            localdateText.setText("Latest Local: " + dateL + " " + timeL);
 
 
             int mSize = measurements.size();
@@ -253,7 +251,7 @@ public class DashboardController {
 
         parameterBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             chosenParameter = newValue;
-            
+
 
         });
     }

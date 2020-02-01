@@ -13,7 +13,7 @@ public class ValuesValidator {
             //PM10
             {
                     {0.0, 21.0},
-                    {21.6, 61},
+                    {21.6, 61.},
                     {61.1, 101.},
                     {101.1, 141},
                     {141.1, 201.},
@@ -74,12 +74,16 @@ public class ValuesValidator {
      * @return status of measurement
      */
     public int validateMeasure(int keyId, double meanValue) {
+        System.out.println(keyId);
+        System.out.println(meanValue);
         int status = -1;
         for (int i = 0; i < referenceTable[keyId].length; i++) {
-            if(meanValue > referenceTable[keyId][i][0] && meanValue <= referenceTable[keyId][i][1])
+            if(meanValue > referenceTable[keyId][i][0] && meanValue <= referenceTable[keyId][i][1]) {
                 status = i;
                 break;
+            }
         }
+        System.out.println(status);
         return  status;
     }
 

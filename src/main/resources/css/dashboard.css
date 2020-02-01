@@ -75,3 +75,19 @@
 .default-color6.chart-bar { -fx-bar-fill: #c62b00; }
 .default-color7.chart-bar { -fx-bar-fill: #ff5700; }
 */
+
+.jfx-slider .track {
+    -fx-background-color:  white;
+}
+
+.jfx-slider .thumb {
+    -fx-background-color:  #00A2D3;
+}
+
+.jfx-slider .colored-track{
+    -fx-background-color:  #00A2D3;
+}
+.jfx-slider .animated-thumb{
+    -fx-background-color: #00A2D3;
+}
+
