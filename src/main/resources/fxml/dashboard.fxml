@@ -159,11 +159,25 @@
               </yAxis>
             </BarChart>
             <AnchorPane layoutX="-2.0" prefHeight="707.0" prefWidth="4.0" style="-fx-background-color: #00A2D3;" />
-            <JFXButton fx:id="saveBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="8.0" onAction="#saveSessionData" prefHeight="22.0" prefWidth="100.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="Save" textFill="WHITE">
-               <font>
-                  <Font name="Tahoma Bold" size="19.0" />
-               </font>
-            </JFXButton>
+            <AnchorPane layoutX="-1.0" prefHeight="65.0" prefWidth="813.0" style="-fx-background-color: #00A2D3;">
+               <children>
+                  <JFXButton fx:id="saveBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="14.0" onAction="#saveSessionData" prefHeight="22.0" prefWidth="100.0" style="-fx-background-color: #333645; -fx-background-radius: 90;" text="Save" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="19.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="loadBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="199.0" layoutY="13.0" onAction="#loadSessionData" prefHeight="22.0" prefWidth="100.0" style="-fx-background-color: #333645; -fx-background-radius: 90;" text="Load" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="19.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="quitBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="699.0" layoutY="14.0" onAction="#closeApplication" prefHeight="22.0" prefWidth="100.0" style="-fx-background-color: #333645; -fx-background-radius: 90;" text="Quit" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="19.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
       <HBox alignment="CENTER" layoutX="326.0" layoutY="417.0" prefHeight="219.0" prefWidth="784.0" style="-fx-background-color: #333645;" stylesheets="@../css/dashboard.css">

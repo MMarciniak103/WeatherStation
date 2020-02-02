@@ -6,10 +6,13 @@ import javafx.animation.PauseTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public final class DialogUtils {
 
@@ -37,5 +40,13 @@ public final class DialogUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Optional<ButtonType> confirmationDialog(){
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Exit");
+        confirmationDialog.setHeaderText("Are you sure you want to exit?");
+        Optional<ButtonType> result = confirmationDialog.showAndWait();
+        return  result;
     }
 }
