@@ -4,11 +4,13 @@ import app.api.utils.Connector;
 import app.api.utils.ValuesValidator;
 import app.models.Measurement;
 import app.util.DialogUtils;
+import app.util.SessionSaver;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
 
+import java.io.File;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +34,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 
 public class DashboardController {
@@ -63,6 +68,9 @@ public class DashboardController {
 
     @FXML
     public JFXSlider limitSlider;
+
+    @FXML
+    public JFXButton saveBtn;
 
     @FXML
     private ResourceBundle resources;
@@ -254,5 +262,19 @@ public class DashboardController {
 
 
         });
+    }
+
+    public void saveSessionData(ActionEvent actionEvent) {
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Json files (*json)","*.json");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+
+        Stage window = (Stage) saveBtn.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(window);
+
+        if(file != null){
+            SessionSaver.saveToJson(measurements,file);
+        }
     }
 }
