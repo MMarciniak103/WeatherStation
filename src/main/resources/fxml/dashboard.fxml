@@ -159,6 +159,11 @@
               </yAxis>
             </BarChart>
             <AnchorPane layoutX="-2.0" prefHeight="707.0" prefWidth="4.0" style="-fx-background-color: #00A2D3;" />
+            <JFXButton fx:id="saveBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="8.0" onAction="#saveSessionData" prefHeight="22.0" prefWidth="100.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="Save" textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="19.0" />
+               </font>
+            </JFXButton>
          </children>
       </AnchorPane>
       <HBox alignment="CENTER" layoutX="326.0" layoutY="417.0" prefHeight="219.0" prefWidth="784.0" style="-fx-background-color: #333645;" stylesheets="@../css/dashboard.css">
