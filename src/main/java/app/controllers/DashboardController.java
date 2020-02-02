@@ -3,6 +3,7 @@ package app.controllers;
 import app.api.utils.Connector;
 import app.api.utils.ValuesValidator;
 import app.models.Measurement;
+import app.util.CloseApplication;
 import app.util.DialogUtils;
 import app.util.SessionSaver;
 import com.jfoenix.controls.JFXButton;
@@ -136,6 +137,9 @@ public class DashboardController {
     }
 
 
+    /**
+     * Sends api request with given parameters and maps returned json into List.
+     */
     public void getAPIResponse(ActionEvent actionEvent) {
         System.out.println(chosenParameter);
         try {
@@ -143,104 +147,123 @@ public class DashboardController {
             String url = apiRequest + URLEncoder.encode(q, StandardCharsets.UTF_8) + apiRequestParameter + chosenParameter.getKey() + apiRequestLimit + (int) limitSlider.getValue();
 
             measurements = Connector.getResponse(url);
-
-            //get date of measurements
-            String dateobj = measurements.get(0).getDate().getUtc();
-            String[] tokens = dateobj.split("T");
-            String date = tokens[0];
-            String time = tokens[1].substring(0, 8);
-            dateText.setText("Latest UTC: " + date + " " + time);
-
-            String dateObjLocal = measurements.get(0).getDate().getLocal();
-            String[] tokensL = dateObjLocal.split("T");
-            String dateL = tokensL[0];
-            String timeL = tokensL[1].substring(0, 8);
-            localdateText.setText("Latest Local: " + dateL + " " + timeL);
-
-
-            int mSize = measurements.size();
-            measurementsNumberText.setText(String.valueOf(mSize));
-
-            //find basic statistics about measurements
-            Double average = measurements.stream().collect(Collectors.averagingDouble(x -> x.getValue()));
-            double min = measurements.stream().min(Comparator.comparing(Measurement::getValue)).get().getValue();
-            double max = measurements.stream().max(Comparator.comparing(Measurement::getValue)).get().getValue();
-
-            double variance = measurements.stream()
-                    .map(i -> i.getValue() - average)
-                    .map(i -> i * i)
-                    .mapToDouble(i -> i).average().getAsDouble();
-
-            double std = Math.sqrt(variance);
-
-            maxValueText.setText(String.format("%.3f", max));
-            minValueText.setText(String.format("%.3f", min));
-            meanText.setText(String.format("%.3f", average));
-            stdText.setText(String.format("%.3f", std));
-
-
-            //make new series and populate it with data
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-
-            series.getData().add(new XYChart.Data<>("min", min));
-            series.getData().add(new XYChart.Data<>("max", max));
-            series.getData().add(new XYChart.Data<>("mean", average));
-            series.getData().add(new XYChart.Data<>("std", std));
-
-            // Compare parameter mean value with reference values so it is possible to decide bar color
-            ValuesValidator valuesValidator = new ValuesValidator();
-            int paramStatus = valuesValidator.validateMeasure(chosenParameter.getTableId(), average);
-            String styleCss = "-fx-bar-fill: ";
-            switch (paramStatus) {
-                case 0:
-                    styleCss = styleCss.concat(" #64DD17;");
-                    break;
-                case 1:
-                    styleCss = styleCss.concat(" #8BC34A;");
-                    break;
-
-                case 2:
-                    styleCss = styleCss.concat(" #FDD835;");
-                    break;
-
-                case 3:
-                    styleCss = styleCss.concat(" #FF9800;");
-                    break;
-
-                case 4:
-                    styleCss = styleCss.concat("  #FF5722;");
-                    break;
-
-                case 5:
-                    styleCss = styleCss.concat("   #f44336;");
-                    break;
-
-                default:
-                    styleCss = styleCss.concat(" white;");
-                    break;
-            }
-
-
-            barPlot.setTitle(String.valueOf(chosenParameter));
-//
-            barPlot.getData().clear();
-
-            // set bar color according to parameter value status returned by ValuesValidator
-            String finalStyleCss = styleCss;
-            Platform.runLater(() -> {
-                barPlot.getData().add(series);
-                for (Node n : barPlot.lookupAll(".chart-bar")) {
-                    n.setStyle(finalStyleCss);
-
-                }
-            });
+            plotMeasurementsData();
 
 
         } catch (InvalidParameterException e) {
             DialogUtils.popupWindow("Invalid City", 2);
         }
 
+    }
+
+
+    private void plotMeasurementsData() {
+        //get date of measurements
+        String dateobj = measurements.get(0).getDate().getUtc();
+        String[] tokens = dateobj.split("T");
+        String date = tokens[0];
+        String time = tokens[1].substring(0, 8);
+        dateText.setText("Latest UTC: " + date + " " + time);
+
+        String dateObjLocal = measurements.get(0).getDate().getLocal();
+        String[] tokensL = dateObjLocal.split("T");
+        String dateL = tokensL[0];
+        String timeL = tokensL[1].substring(0, 8);
+        localdateText.setText("Latest Local: " + dateL + " " + timeL);
+
+        double[] statistics = getMeasurementStatistics(measurements);
+        double min = statistics[0];
+        double max = statistics[1];
+        double average = statistics[2];
+        double std = statistics[3];
+
+
+        maxValueText.setText(String.format("%.3f", max));
+        minValueText.setText(String.format("%.3f", min));
+        meanText.setText(String.format("%.3f", average));
+        stdText.setText(String.format("%.3f", std));
+
+
+        //make new series and populate it with data
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+
+        series.getData().add(new XYChart.Data<>("min", min));
+        series.getData().add(new XYChart.Data<>("max", max));
+        series.getData().add(new XYChart.Data<>("mean", average));
+        series.getData().add(new XYChart.Data<>("std", std));
+
+        // Compare parameter mean value with reference values so it is possible to decide bar color
+        ValuesValidator valuesValidator = new ValuesValidator();
+        int paramStatus = valuesValidator.validateMeasure(chosenParameter.getTableId(), average);
+        String styleCss = "-fx-bar-fill: ";
+        switch (paramStatus) {
+            case 0:
+                styleCss = styleCss.concat(" #64DD17;");
+                break;
+            case 1:
+                styleCss = styleCss.concat(" #8BC34A;");
+                break;
+
+            case 2:
+                styleCss = styleCss.concat(" #FDD835;");
+                break;
+
+            case 3:
+                styleCss = styleCss.concat(" #FF9800;");
+                break;
+
+            case 4:
+                styleCss = styleCss.concat("  #FF5722;");
+                break;
+
+            case 5:
+                styleCss = styleCss.concat("   #f44336;");
+                break;
+
+            default:
+                styleCss = styleCss.concat(" white;");
+                break;
+        }
+
+
+        barPlot.setTitle(String.valueOf(chosenParameter));
+//
+        barPlot.getData().clear();
+
+        // set bar color according to parameter value status returned by ValuesValidator
+        String finalStyleCss = styleCss;
+        Platform.runLater(() -> {
+            barPlot.getData().add(series);
+            for (Node n : barPlot.lookupAll(".chart-bar")) {
+                n.setStyle(finalStyleCss);
+
+            }
+        });
+    }
+
+    /**
+     * Calculates descriptive statistics of measurement series.
+     * @param measurements List containing measurements objects
+     * @return array of calculated statistics (min,max,average,std)
+     */
+    private double[] getMeasurementStatistics(List<Measurement> measurements){
+        int mSize = measurements.size();
+        measurementsNumberText.setText(String.valueOf(mSize));
+
+        //find basic statistics about measurements
+        Double average = measurements.stream().collect(Collectors.averagingDouble(x -> x.getValue()));
+        double min = measurements.stream().min(Comparator.comparing(Measurement::getValue)).get().getValue();
+        double max = measurements.stream().max(Comparator.comparing(Measurement::getValue)).get().getValue();
+
+        double variance = measurements.stream()
+                .map(i -> i.getValue() - average)
+                .map(i -> i * i)
+                .mapToDouble(i -> i).average().getAsDouble();
+
+        double std = Math.sqrt(variance);
+
+        return new double[]{min,max,average,std};
     }
 
 
@@ -264,6 +287,9 @@ public class DashboardController {
         });
     }
 
+    /**
+     * Save current session's data into chose file.
+     */
     public void saveSessionData(ActionEvent actionEvent) {
 
         FileChooser fileChooser = new FileChooser();
@@ -276,5 +302,27 @@ public class DashboardController {
         if(file != null){
             SessionSaver.saveToJson(measurements,file);
         }
+    }
+
+    /**
+     * Load saved session's data from chose file and plots it.
+     */
+    public void loadSessionData(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Json files (*json)","*.json");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+
+        Stage window = (Stage) saveBtn.getScene().getWindow();
+        File file = fileChooser.showOpenDialog(window);
+
+        if(file != null){
+            measurements = SessionSaver.loadFromJson(file);
+
+            plotMeasurementsData();
+        }
+    }
+
+    public void closeApplication(ActionEvent actionEvent) {
+        CloseApplication.closeApplication();
     }
 }
