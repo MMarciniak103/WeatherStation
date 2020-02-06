@@ -11,6 +11,10 @@ import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+/**
+ * Class that provides communication with API.
+ * It allows to fetch measurement's data and return it in List containing POJO objects.
+ */
 public class Connector {
 
     public static List<Measurement> getResponse(String url) {
@@ -22,13 +26,13 @@ public class Connector {
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
-            if(responseCode != 200)
+            if (responseCode != 200)
                 throw new InvalidParameterException("Invalid Url!");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String inputLine;
 
-            while((inputLine = in.readLine())!=null){
+            while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
 

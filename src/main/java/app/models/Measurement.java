@@ -4,7 +4,9 @@ import app.models.measurementComponents.Coordinates;
 import app.models.measurementComponents.Date;
 
 
-
+/**
+ * Model for measurement object that represents API data as a POJO class.
+ */
 public class Measurement {
 
     private String location;
@@ -16,20 +18,43 @@ public class Measurement {
     private String country;
     private String city;
 
-    public enum Parameter{
-        BC("bc",-1),
-        CO("co",5),
-        NO2("no2",3),
-        O3("o3",2),
-        PM10("pm10",0),
-        PM25("pm25",1),
-        SO2("so2",4);
+    public enum Parameter {
+        BC("bc", -1),
+        CO("co", 5),
+        NO2("no2", 3),
+        O3("o3", 2),
+        PM10("pm10", 0),
+        PM25("pm25", 1),
+        SO2("so2", 4);
 
         String key;
         int tableId;
 
-        Parameter(String key,int tableId) {
-            this.key = key;this.tableId=tableId;
+        Parameter(String key, int tableId) {
+            this.key = key;
+            this.tableId = tableId;
+        }
+
+        /**
+         * Finds parameter by a given key
+         * @param key String value of parameter's key
+         * @return Parameter
+         */
+        public static  Parameter findByKey(String key){
+            if(key.equals("co"))
+                return CO;
+            else if(key.equals("no2"))
+                return NO2;
+            else if(key.equals("o3"))
+                return O3;
+            else if(key.equals("pm10"))
+                return PM10;
+            else if(key.equals("pm25"))
+                return PM25;
+            else if(key.equals("so2"))
+                return SO2;
+            else
+                return null;
         }
 
         public String getKey() {
@@ -63,7 +88,7 @@ public class Measurement {
     }
 
     public void setLocation(String location) {
-            this.location = location;
+        this.location = location;
     }
 
     public String getParameter() {
