@@ -9,6 +9,8 @@ User can also save current session data is json format. It is also possible to u
 >
 Documentation: [JavaDoc](https://mmarciniak103.github.io/WeatherStation/)
 >
+Api website: [API](https://docs.openaq.org/#api-_)
+>
 ## Technologies 
 Project is created with:
 * Java FX version 13
