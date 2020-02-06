@@ -1,6 +1,0 @@
-app
-app.api.utils
-app.controllers
-app.models
-app.models.measurementComponents
-app.util
