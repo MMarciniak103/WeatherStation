@@ -24,8 +24,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -37,9 +35,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
-
+/**
+ * Controller for dashboard view.
+ */
 public class DashboardController {
 
     private final static String apiRequest = "https://api.openaq.org/v1/measurements?city=";
@@ -74,6 +73,12 @@ public class DashboardController {
     public JFXButton saveBtn;
 
     @FXML
+    public Label paramLabel;
+
+    @FXML
+    public Label statusLabel;
+
+    @FXML
     private ResourceBundle resources;
 
     @FXML
@@ -102,12 +107,17 @@ public class DashboardController {
 
     private StringProperty chosenCity;
 
+    /**
+     * List containing current series of measurements
+     */
     private List<Measurement> measurements;
-
-    private Map<String, List<Measurement>> params;
 
     private Measurement.Parameter chosenParameter;
 
+    /**
+     * FileChooser object that is used to saving and loading measurements data.
+     */
+    private FileChooser fileChooser;
 
     @FXML
     void initialize() {
@@ -124,7 +134,6 @@ public class DashboardController {
         chosenCity.bind(cityText.textProperty());
 
         measurements = new ArrayList<>();
-        params = new HashMap<>();
 
         configureParameterBox();
 
@@ -132,13 +141,18 @@ public class DashboardController {
 
         barPlot.setLegendVisible(false);
 
-        xAxis.setCategories(FXCollections.observableArrayList("min","max","mean","std"));
+        xAxis.setCategories(FXCollections.observableArrayList("min", "max", "mean", "std"));
 
+
+        fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Json files (*json)", "*.json");
+        fileChooser.getExtensionFilters().add(extensionFilter);
     }
 
 
     /**
      * Sends api request with given parameters and maps returned json into List.
+     * After that it calls method that plots fetched data.
      */
     public void getAPIResponse(ActionEvent actionEvent) {
         System.out.println(chosenParameter);
@@ -147,6 +161,8 @@ public class DashboardController {
             String url = apiRequest + URLEncoder.encode(q, StandardCharsets.UTF_8) + apiRequestParameter + chosenParameter.getKey() + apiRequestLimit + (int) limitSlider.getValue();
 
             measurements = Connector.getResponse(url);
+            // overwrite city name with proper encoding
+            measurements.forEach(x -> x.setCity(q));
             plotMeasurementsData();
 
 
@@ -157,20 +173,28 @@ public class DashboardController {
     }
 
 
+    /**
+     * Method that plots data that is currently stored in measurements list.
+     */
     private void plotMeasurementsData() {
         //get date of measurements
-        String dateobj = measurements.get(0).getDate().getUtc();
-        String[] tokens = dateobj.split("T");
+        String latestDate = measurements.get(0).getDate().getLocal();
+        String[] tokens = latestDate.split("T");
         String date = tokens[0];
         String time = tokens[1].substring(0, 8);
-        dateText.setText("Latest UTC: " + date + " " + time);
+        dateText.setText("Latest measurement: " + date + " " + time);
 
-        String dateObjLocal = measurements.get(0).getDate().getLocal();
-        String[] tokensL = dateObjLocal.split("T");
+        String oldestDate = measurements.get(measurements.size() - 1).getDate().getLocal();
+        String[] tokensL = oldestDate.split("T");
         String dateL = tokensL[0];
         String timeL = tokensL[1].substring(0, 8);
-        localdateText.setText("Latest Local: " + dateL + " " + timeL);
+        localdateText.setText("Oldest measurement: " + dateL + " " + timeL);
 
+        paramLabel.setText("Param: " + measurements.get(0).getParameter());
+
+
+
+        // Call method that calculated descriptive statistics of measurements
         double[] statistics = getMeasurementStatistics(measurements);
         double min = statistics[0];
         double max = statistics[1];
@@ -200,25 +224,31 @@ public class DashboardController {
         switch (paramStatus) {
             case 0:
                 styleCss = styleCss.concat(" #64DD17;");
+                statusLabel.setText("Status: Very Good");
                 break;
             case 1:
                 styleCss = styleCss.concat(" #8BC34A;");
+                statusLabel.setText("Status: Good");
                 break;
 
             case 2:
                 styleCss = styleCss.concat(" #FDD835;");
+                statusLabel.setText("Status: Moderate");
                 break;
 
             case 3:
                 styleCss = styleCss.concat(" #FF9800;");
+                statusLabel.setText("Status: Passable");
                 break;
 
             case 4:
                 styleCss = styleCss.concat("  #FF5722;");
+                statusLabel.setText("Status: Bad");
                 break;
 
             case 5:
                 styleCss = styleCss.concat("   #f44336;");
+                statusLabel.setText("Status: Very Bad");
                 break;
 
             default:
@@ -228,7 +258,7 @@ public class DashboardController {
 
 
         barPlot.setTitle(String.valueOf(chosenParameter));
-//
+
         barPlot.getData().clear();
 
         // set bar color according to parameter value status returned by ValuesValidator
@@ -244,10 +274,12 @@ public class DashboardController {
 
     /**
      * Calculates descriptive statistics of measurement series.
+     * It uses streams so the calculations are made in a more efficient way.
+     *
      * @param measurements List containing measurements objects
      * @return array of calculated statistics (min,max,average,std)
      */
-    private double[] getMeasurementStatistics(List<Measurement> measurements){
+    private double[] getMeasurementStatistics(List<Measurement> measurements) {
         int mSize = measurements.size();
         measurementsNumberText.setText(String.valueOf(mSize));
 
@@ -263,7 +295,7 @@ public class DashboardController {
 
         double std = Math.sqrt(variance);
 
-        return new double[]{min,max,average,std};
+        return new double[]{min, max, average, std};
     }
 
 
@@ -292,15 +324,11 @@ public class DashboardController {
      */
     public void saveSessionData(ActionEvent actionEvent) {
 
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Json files (*json)","*.json");
-        fileChooser.getExtensionFilters().add(extensionFilter);
-
         Stage window = (Stage) saveBtn.getScene().getWindow();
         File file = fileChooser.showSaveDialog(window);
 
-        if(file != null){
-            SessionSaver.saveToJson(measurements,file);
+        if (file != null) {
+            SessionSaver.saveToJson(measurements, file);
         }
     }
 
@@ -308,16 +336,21 @@ public class DashboardController {
      * Load saved session's data from chose file and plots it.
      */
     public void loadSessionData(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Json files (*json)","*.json");
-        fileChooser.getExtensionFilters().add(extensionFilter);
+
 
         Stage window = (Stage) saveBtn.getScene().getWindow();
         File file = fileChooser.showOpenDialog(window);
 
-        if(file != null){
+        if (file != null) {
             measurements = SessionSaver.loadFromJson(file);
-
+            // Finds parameter associated with loaded measurements.
+            Measurement.Parameter param = Measurement.Parameter.findByKey(measurements.get(0).getParameter());
+            if(param != null){
+                chosenParameter = param;
+                parameterBox.getSelectionModel().select(param);
+            }
+            String city = measurements.get(0).getCity();
+            cityText.setText(city);
             plotMeasurementsData();
         }
     }

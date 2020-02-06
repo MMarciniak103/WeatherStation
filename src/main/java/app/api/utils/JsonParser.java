@@ -6,14 +6,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Helper class that implements method used for parsing json data returned by API into list of Measurements objects.
+ */
 public class JsonParser {
 
     /**

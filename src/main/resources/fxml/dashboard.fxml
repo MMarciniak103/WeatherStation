@@ -152,10 +152,10 @@
          <children>
             <BarChart fx:id="barPlot" layoutX="16.0" layoutY="125.0" prefHeight="272.0" prefWidth="784.0" stylesheets="@../css/dashboard.css">
               <xAxis>
-                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                <CategoryAxis side="BOTTOM" tickLabelFill="WHITE" fx:id="xAxis" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="yAxis" side="LEFT" />
+                <NumberAxis fx:id="yAxis" side="LEFT" tickLabelFill="WHITE" />
               </yAxis>
             </BarChart>
             <AnchorPane layoutX="-2.0" prefHeight="707.0" prefWidth="4.0" style="-fx-background-color: #00A2D3;" />
@@ -178,6 +178,22 @@
                   </JFXButton>
                </children>
             </AnchorPane>
+            <Label fx:id="paramLabel" alignment="CENTER" layoutX="256.0" layoutY="80.0" prefHeight="24.0" prefWidth="300.0" text="Param: " textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="statusLabel" alignment="CENTER" layoutX="256.0" layoutY="110.0" prefHeight="24.0" prefWidth="300.0" text="Status:" textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </Label>
          </children>
       </AnchorPane>
       <HBox alignment="CENTER" layoutX="326.0" layoutY="417.0" prefHeight="219.0" prefWidth="784.0" style="-fx-background-color: #333645;" stylesheets="@../css/dashboard.css">

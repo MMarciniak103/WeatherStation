@@ -69,7 +69,8 @@ public class ValuesValidator {
 
     /**
      * Method that compares measured parameter with reference table and sets its status
-     * @param keyId parameter id -> table's row id
+     *
+     * @param keyId  parameter id - table's row id
      * @param meanValue average of measured parameter's values
      * @return status of measurement
      */
@@ -78,13 +79,13 @@ public class ValuesValidator {
         System.out.println(meanValue);
         int status = -1;
         for (int i = 0; i < referenceTable[keyId].length; i++) {
-            if(meanValue > referenceTable[keyId][i][0] && meanValue <= referenceTable[keyId][i][1]) {
+            if (meanValue > referenceTable[keyId][i][0] && meanValue <= referenceTable[keyId][i][1]) {
                 status = i;
                 break;
             }
         }
         System.out.println(status);
-        return  status;
+        return status;
     }
 
 }

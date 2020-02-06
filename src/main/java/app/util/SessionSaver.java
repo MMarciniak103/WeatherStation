@@ -12,6 +12,11 @@ import java.util.List;
  */
 public final class SessionSaver {
 
+    /**
+     * Saves current session data into file of json format.
+     * @param jsonData List of measurements that we want to save.
+     * @param file Chosen file that would contain saved data.
+     */
     public static void saveToJson(List jsonData, File file){
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
 
@@ -23,6 +28,11 @@ public final class SessionSaver {
         }
     }
 
+    /**
+     * Loads saved session data containing measurements.
+     * @param file Chosen file in json format.
+     * @return List of measurements.
+     */
     public static List loadFromJson(File file){
         try(BufferedReader reader = new BufferedReader(new FileReader(file))){
 
