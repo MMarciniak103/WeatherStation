@@ -8,6 +8,7 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -137,13 +138,29 @@
             </Label>
             <AnchorPane prefHeight="221.0" prefWidth="307.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <JFXButton fx:id="getResponseBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="144.0" onAction="#getAPIResponse" prefHeight="55.0" prefWidth="149.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="GET" textFill="WHITE">
+                  <JFXComboBox fx:id="parameterBox" focusColor="#00e5ff" layoutX="95.0" layoutY="63.0" prefHeight="43.0" prefWidth="122.0" promptText="Parameter" stylesheets="@../css/dashboard.css" />
+                  <JFXSlider fx:id="limitSlider" blockIncrement="100.0" indicatorPosition="LEFT" layoutX="8.0" layoutY="21.0" max="10000.0" min="100.0" prefHeight="32.0" prefWidth="174.0" snapToTicks="true" value="1000.0" />
+                  <Label alignment="CENTER" layoutX="7.0" layoutY="134.0" prefHeight="25.0" prefWidth="300.0" text="Date From:" textFill="WHITE">
                      <font>
-                        <Font name="Tahoma Bold" size="27.0" />
+                        <Font name="Tahoma Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="datePicker" layoutX="19.0" layoutY="159.0" />
+                  <Label fx:id="limitLabel" layoutX="241.0" layoutY="28.0" prefHeight="19.0" prefWidth="48.0" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="193.0" layoutY="28.0" prefHeight="19.0" prefWidth="48.0" text="Limit:" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <JFXButton fx:id="clearDatePickerBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="217.0" layoutY="156.0" onAction="#clearDatePicker" prefHeight="32.0" prefWidth="76.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="Clear" textFill="WHITE">
+                     <font>
+                        <Font name="Tahoma Bold" size="13.0" />
                      </font>
                   </JFXButton>
-                  <JFXComboBox fx:id="parameterBox" focusColor="#00e5ff" layoutX="95.0" layoutY="63.0" prefHeight="43.0" prefWidth="122.0" promptText="Parameter" stylesheets="@../css/dashboard.css" />
-                  <JFXSlider fx:id="limitSlider" blockIncrement="100.0" layoutX="87.0" layoutY="24.0" majorTickUnit="100.0" max="10000.0" min="100.0" minorTickCount="100" snapToTicks="true" value="1000.0" />
                </children>
             </AnchorPane>
          </children>
@@ -194,6 +211,11 @@
                   <Insets bottom="10.0" />
                </padding>
             </Label>
+            <JFXButton fx:id="getResponseBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="336.0" layoutY="647.0" onAction="#getAPIResponse" prefHeight="43.0" prefWidth="140.0" style="-fx-background-color: #0277BD; -fx-background-radius: 90;" text="GET" textFill="WHITE">
+               <font>
+                  <Font name="Tahoma Bold" size="27.0" />
+               </font>
+            </JFXButton>
          </children>
       </AnchorPane>
       <HBox alignment="CENTER" layoutX="326.0" layoutY="417.0" prefHeight="219.0" prefWidth="784.0" style="-fx-background-color: #333645;" stylesheets="@../css/dashboard.css">
