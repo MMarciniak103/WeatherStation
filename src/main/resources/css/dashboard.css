@@ -91,3 +91,87 @@
     -fx-background-color: #00A2D3;
 }
 
+
+.date-picker .text-field{
+    -fx-background-color:#333645 ;
+    -fx-background-insets: 1 0 1 1;
+    -fx-background-radius: 2 0 0 2;
+    -fx-text-fill:  #00A2D3;
+}
+
+.date-picker-popup {
+    -fx-background-color:#333645 ;
+    -fx-text-fill: white;
+}
+
+.date-picker-popup > * > .day-cell{
+    -fx-background-color:#333645 ;
+    -fx-text-fill: white;
+}
+
+.date-picker-popup > .month-year-pane {
+     -fx-padding: 0.588883em 0.5em 0.666667em 0.5em; /* 7 6 8 6 */
+     -fx-background-color:#333645 ;
+     -fx-background-insets: 0 0 0 0, 0 0 1 0;
+    -fx-text-fill: white;
+ }
+
+
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: #00A2D3;
+    -fx-background-insets: 0, 1, 2;
+    -fx-color: transparent;
+    -fx-background-radius: 90;
+
+}
+
+
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: #333645;
+    -fx-padding: 0;
+    -fx-text-fill:#00A2D3 ;
+}
+
+
+
+.date-picker-popup > * > .date-cell {
+    -fx-background-color:  #333645;
+    -fx-background-insets: 1, 2;
+    -fx-padding: 0;
+    -fx-alignment: BASELINE_CENTER;
+    -fx-opacity: 1.0;
+    -fx-text-fill: white;
+}
+
+.date-picker-popup > * > .week-number-cell {
+    -fx-padding: 0.333333em 0.583333em 0.333333em 0.583333em; /* 4 7 4 7 */
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+    -fx-background: #333645;
+    -fx-background-color: #333645;
+    -fx-text-fill: white;
+}
+
+.date-picker-popup > * > .day-cell {
+    -fx-padding: 0.333333em 0.583333em 0.333333em 0.583333em; /* 4 7 4 7 */
+    -fx-border-color:  #00A2D3;
+    -fx-border-width: 1px;
+    -fx-font-size: 1em;
+    -fx-background: #333645;
+    -fx-background-color: #333645;
+    -fx-text-fill:  #00A2D3;
+}
+
+.date-picker-popup > * > .today {
+    -fx-background-color: white;
+    -fx-background-insets: 1, 2, 3;
+}
+
+.date-picker-popup > * > .day-cell:hover,
+.date-picker-popup > * > .selected,
+.date-picker-popup > * > .previous-month.selected,
+.date-picker-popup > * > .next-month.selected {
+    -fx-background: #00A2D3;
+    -fx-text-fill:  white;
+}

@@ -6,21 +6,21 @@ import app.models.Measurement;
 import app.util.CloseApplication;
 import app.util.DialogUtils;
 import app.util.SessionSaver;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXSlider;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -31,10 +31,13 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 /**
  * Controller for dashboard view.
@@ -44,6 +47,7 @@ public class DashboardController {
     private final static String apiRequest = "https://api.openaq.org/v1/measurements?city=";
     private final static String apiRequestParameter = "&parameter=";
     private final static String apiRequestLimit = "&limit=";
+    private final static String apiRequestFromDate = "&date_from=";
 
     @FXML
     public BarChart<String, Number> barPlot;
@@ -77,6 +81,13 @@ public class DashboardController {
 
     @FXML
     public Label statusLabel;
+
+    @FXML
+    public DatePicker datePicker;
+
+    @FXML
+    public Label limitLabel;
+
 
     @FXML
     private ResourceBundle resources;
@@ -119,6 +130,9 @@ public class DashboardController {
      */
     private FileChooser fileChooser;
 
+    private StringConverter<Number> converter = new NumberStringConverter();
+    private IntegerProperty integerProperty = new SimpleIntegerProperty();
+
     @FXML
     void initialize() {
         assert cityText != null : "fx:id=\"cityText\" was not injected: check your FXML file 'dashboard.fxml'.";
@@ -147,6 +161,10 @@ public class DashboardController {
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Json files (*json)", "*.json");
         fileChooser.getExtensionFilters().add(extensionFilter);
+
+        integerProperty.bind(limitSlider.valueProperty());
+        limitLabel.textProperty().bindBidirectional(integerProperty,converter);
+
     }
 
 
@@ -158,16 +176,19 @@ public class DashboardController {
         System.out.println(chosenParameter);
         try {
             String q = chosenCity.get();
+            LocalDate date = datePicker.getValue();
+            System.out.println("DATE : "+date);
             String url = apiRequest + URLEncoder.encode(q, StandardCharsets.UTF_8) + apiRequestParameter + chosenParameter.getKey() + apiRequestLimit + (int) limitSlider.getValue();
+            if(date !=  null )
+                url = url.concat(apiRequestFromDate+date.toString());
 
             measurements = Connector.getResponse(url);
             // overwrite city name with proper encoding
             measurements.forEach(x -> x.setCity(q));
             plotMeasurementsData();
 
-
         } catch (InvalidParameterException e) {
-            DialogUtils.popupWindow("Invalid City", 2);
+            DialogUtils.popupWindow("Invalid URL", 2);
         }
 
     }
@@ -191,7 +212,6 @@ public class DashboardController {
         localdateText.setText("Oldest: " + dateL + " " + timeL);
 
         paramLabel.setText("Param: " + measurements.get(0).getParameter());
-
 
 
         // Call method that calculated descriptive statistics of measurements
@@ -345,7 +365,7 @@ public class DashboardController {
             measurements = SessionSaver.loadFromJson(file);
             // Finds parameter associated with loaded measurements.
             Measurement.Parameter param = Measurement.Parameter.findByKey(measurements.get(0).getParameter());
-            if(param != null){
+            if (param != null) {
                 chosenParameter = param;
                 parameterBox.getSelectionModel().select(param);
             }
@@ -357,5 +377,9 @@ public class DashboardController {
 
     public void closeApplication(ActionEvent actionEvent) {
         CloseApplication.closeApplication();
+    }
+
+    public void clearDatePicker(ActionEvent actionEvent) {
+        datePicker.setValue(null);
     }
 }
