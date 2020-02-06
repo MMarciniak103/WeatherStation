@@ -182,13 +182,13 @@ public class DashboardController {
         String[] tokens = latestDate.split("T");
         String date = tokens[0];
         String time = tokens[1].substring(0, 8);
-        dateText.setText("Latest measurement: " + date + " " + time);
+        dateText.setText("Latest: " + date + " " + time);
 
         String oldestDate = measurements.get(measurements.size() - 1).getDate().getLocal();
         String[] tokensL = oldestDate.split("T");
         String dateL = tokensL[0];
         String timeL = tokensL[1].substring(0, 8);
-        localdateText.setText("Oldest measurement: " + dateL + " " + timeL);
+        localdateText.setText("Oldest: " + dateL + " " + timeL);
 
         paramLabel.setText("Param: " + measurements.get(0).getParameter());
 
